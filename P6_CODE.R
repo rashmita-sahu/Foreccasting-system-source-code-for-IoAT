@@ -27,61 +27,17 @@ Sys.time()
 x<-read.csv('D:/R_Experiments/Irrigation_DS.csv')
 
 x=c(x[ ,1], x[ ,2], x[ ,3])
-
+y=x[ ,1]
+z=y[1:50000]
 ############# Total variation Regularization on dataset##################################
-x[i]=c(x)
-out=admm.tv(c(x))
-
-# Simulated noisy data
-noisy_data <- c(x)  # Assuming x is the dataset
-
-# Apply fused lasso (total variation regularization)
-fit <- fusedlasso1d(noisy_data)
-
-# Extract the denoised signal
-denoised_signal <- coef(fit)$beta
-
-
-
-# Load required library
-if (!require("genlasso")) install.packages("genlasso")
-library(genlasso)
-
-# PART 1: Load and preprocess the dataset
-options(scipen=999)
-Sys.time()
-x <- read.csv('D:/R_Experiments/Irrigation_DS.csv')
-
-# Assuming x has 3 columns: soil moisture, temperature, humidity
-noisy_data <- c(x[, 1], x[, 2], x[, 3])  # Combine the dataset as a single vector
-
-# Apply fused lasso (total variation regularization)
-fit <- fusedlasso1d(noisy_data)
-
-# Determine the range of lambda values
-max_lambda <- max(fit$lambda)  # Maximum lambda in the computed path
-min_lambda <- min(fit$lambda)  # Minimum lambda in the computed path
-cat("Valid lambda range: ", min_lambda, "to", max_lambda, "\n")
-
-# Choose a lambda value within this range
-lambda <- max_lambda * 0.5  # Example: Use a lambda value at 50% of max_lambda
-cat("Selected lambda: ", lambda, "\n")
-
-# Extract the denoised signal
-denoised_signal <- coef(fit, lambda = lambda)$beta
-
-# Visualization
-time_index <- 1:length(noisy_data)  # Create a time index for x-axis
-plot(time_index, noisy_data, type = "p", col = "gray", pch = 16, 
-     main = "Total Variation Regularization on Dataset",
-     xlab = "Time Index", ylab = "Signal Values", cex = 0.8)
-lines(time_index, denoised_signal, col = "red", lwd = 2)  # Denoised signal
-
-# Add Legend
-legend("topright", legend = c("Noisy Data", "Denoised Signal"),
-       col = c("gray", "red"), lty = c(NA, 1), lwd = c(NA, 2), 
-       pch = c(16, NA), bty = "n")
-
+xsignal = c(z)
+output = admm.tv(c(z))
+output=c(output)
+## visualize
+opar <- par(no.readonly=TRUE)
+plot(xsignal, type="l", main="Total Variance Regularization for soil moisture Sensor")
+lines(1:50000, output$x, col="red", lwd=1)
+par(opar)
 #####################################Reading Dataset for probablistic clustering##########################################################
 x1=x[ , 1] #soil moisture sensor data
 x2=x[ , 2] #temperature sensor data
@@ -161,31 +117,6 @@ for (i in 1:9) {
   assign(var_name, fun.zero.omit(as.vector(na.omit(get(var_name)))))
   
 }
-
-
-c1 <- as.vector(na.omit(c1))
-c2 <- as.vector(na.omit(c2))
-c3 <- as.vector(na.omit(c3))
-c4 <- as.vector(na.omit(c4))
-c5 <- as.vector(na.omit(c5))
-c6 <- as.vector(na.omit(c6))
-c7 <- as.vector(na.omit(c7))
-c8 <- as.vector(na.omit(c8))
-c9 <- as.vector(na.omit(c9))
-
-
-c1=fun.zero.omit(c1)
-c2=fun.zero.omit(c2)
-c3=fun.zero.omit(c3)
-c4=fun.zero.omit(c4)
-c5=fun.zero.omit(c5)
-c6=fun.zero.omit(c6)
-c7=fun.zero.omit(c7)
-c8=fun.zero.omit(c8)
-c9=fun.zero.omit(c9)
-
-
-
 
 #######################Finding significant value from each cluster##############
 i_value_c1=-log(prop.table(c1))
@@ -358,27 +289,6 @@ for(i in 1:length(x2))
   }
 }
 
-
-c1 <- as.vector(na.omit(c1))
-c2 <- as.vector(na.omit(c2))
-c3 <- as.vector(na.omit(c3))
-c4 <- as.vector(na.omit(c4))
-c5 <- as.vector(na.omit(c5))
-c6 <- as.vector(na.omit(c6))
-c7 <- as.vector(na.omit(c7))
-c8 <- as.vector(na.omit(c8))
-c9 <- as.vector(na.omit(c9))
-
-c1=fun.zero.omit(c1)
-c2=fun.zero.omit(c2)
-c3=fun.zero.omit(c3)
-c4=fun.zero.omit(c4)
-c5=fun.zero.omit(c5)
-c6=fun.zero.omit(c6)
-c7=fun.zero.omit(c7)
-c8=fun.zero.omit(c8)
-c9=fun.zero.omit(c9)
-
 #######################Finding significant value from each cluster##############
 i_value_c1=-log(prop.table(c1))
 i_value_c2=-log(prop.table(c2))
@@ -521,32 +431,6 @@ for(i in 1:length(x3))
     
   }
 }
-
-
-c1 <- as.vector(na.omit(c1))
-c2 <- as.vector(na.omit(c2))
-c3 <- as.vector(na.omit(c3))
-c4 <- as.vector(na.omit(c4))
-c5 <- as.vector(na.omit(c5))
-c6 <- as.vector(na.omit(c6))
-c7 <- as.vector(na.omit(c7))
-c8 <- as.vector(na.omit(c8))
-c9 <- as.vector(na.omit(c9))
-
-
-
-
-c1=fun.zero.omit(c1)
-c2=fun.zero.omit(c2)
-c3=fun.zero.omit(c3)
-c4=fun.zero.omit(c4)
-c5=fun.zero.omit(c5)
-c6=fun.zero.omit(c6)
-c7=fun.zero.omit(c7)
-c8=fun.zero.omit(c8)
-c9=fun.zero.omit(c9)
-
-
 
 
 #######################Finding significant value from each cluster##############
@@ -1158,39 +1042,5 @@ smape(mean(c9), conscious_value_for_c8_and_c9)
 fuzzyr.accuracy(mean(c8), conscious_value_for_c8_and_c9)
 fuzzyr.accuracy(mean(c9), conscious_value_for_c8_and_c9)
 
-# Define the cluster
-C1 <- c(54, 12, 34)
 
-# Calculate the probabilistic value of each element in the cluster
-prob_values <- C1 / sum(C1)
 
-# Display the results
-print(prob_values)
-
-# Verify that the sum of probabilities is equal to 1
-sum_probabilities <- sum(prob_values)
-print(paste("Sum of probabilities:", sum_probabilities))
-
-# Define the cluster
-C1 <- c(35, 52, 23)
-
-# Calculate the probabilistic value of each element in the cluster
-prob_values <- C1 / sum(C1)
-
-# Display the results
-print(prob_values)
-
-# Verify that the sum of probabilities is equal to 1
-sum_probabilities <- sum(prob_values)
-print(paste("Sum of probabilities:", sum_probabilities))
-
-S<-c(35, 52, 23)
-prop.table((S))
--log2(prop.table((S)))
-
-R=(0.65-1.08)^2
-r=R*(((0.65)/(3*1.08))^1/3)
-conscious_value_for_ci_and_cj=0.65+r
-conscious_value_for_ci_and_cj
-
-Probabilistic_value_L1= prop.table(54)
